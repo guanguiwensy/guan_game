@@ -24,6 +24,7 @@ const SPAWN_X_MIN := 160.0
 const SPAWN_X_MAX := 920.0
 
 var state: int = STATE_RUNNING
+var auto_cast: bool = true     # M5: toggle for auto-releasing active skills
 var layer: int = 1
 var hero: CombatActor
 var enemies: Array[CombatActor] = []
@@ -126,9 +127,10 @@ func _hero_act(delta: float) -> void:
 	var target := _nearest_enemy()
 	if target == null:
 		return
-	for s in _skills.ready_skills():
-		_cast_skill(s, target)
-		_skills.trigger(s)
+	if auto_cast:
+		for s in _skills.ready_skills():
+			_cast_skill(s, target)
+			_skills.trigger(s)
 	if hero.attack_cooldown <= 0.0 and hero.position.distance_to(target.position) <= hero.attack_range:
 		if _skills.auto_skill != null:
 			_apply_skill_damage(_skills.auto_skill, hero, target)
@@ -269,3 +271,19 @@ func skill_status() -> Array:
 	for s in _skills.actives:
 		out.append({"id": s.id, "name": s.display_name, "remaining": _skills.remaining(s.id), "cooldown": s.cooldown})
 	return out
+
+
+## Manually fire an active skill by id (M5 — tap a skill chip). Casts only if off cooldown
+## and a target exists. Returns true if it fired.
+func manual_cast(skill_id: StringName) -> bool:
+	if state != STATE_RUNNING:
+		return false
+	var target := _nearest_enemy()
+	if target == null:
+		return false
+	for s in _skills.actives:
+		if s.id == skill_id and _skills.is_ready(s):
+			_cast_skill(s, target)
+			_skills.trigger(s)
+			return true
+	return false

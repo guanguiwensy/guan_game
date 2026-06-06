@@ -27,6 +27,11 @@ func _ready() -> void:
 	label.position = Vector2(-24, -24)
 	add_child(label)
 
+	if _is_crit:   # M5: crits pop in
+		scale = Vector2(1.6, 1.6)
+		var st := create_tween()
+		st.tween_property(self, "scale", Vector2.ONE, 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
 	var tw := create_tween()
 	tw.tween_property(self, "position:y", position.y - 72.0, 0.6)
 	tw.parallel().tween_property(self, "modulate:a", 0.0, 0.6)

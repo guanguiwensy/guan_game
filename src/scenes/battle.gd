@@ -19,7 +19,10 @@ var _stage: StageData
 var _affix_pool: Array = []
 var _paused := false
 var _run_counter := 0
+var _shake := 0.0
 var current_layer: int = 1
+
+const QUALITY_CN := {&"common": "锈蚀", &"magic": "灼印", &"rare": "淬火", &"epic": "焚誓", &"legendary": "渊心"}
 
 
 func _ready() -> void:
@@ -32,6 +35,8 @@ func _ready() -> void:
 	_hud.debug_jump.connect(start_layer)
 	_hud.inventory_pressed.connect(_open_inventory)
 	_hud.talents_pressed.connect(_open_talents)
+	_hud.skill_tapped.connect(_on_skill_tapped)
+	_hud.auto_toggled.connect(_on_auto_toggled)
 
 	_result = ResultPanel.new()
 	add_child(_result)
@@ -57,6 +62,9 @@ func start_layer(layer: int) -> void:
 	_clear_views()
 	_result.hide_panel()
 	_paused = false
+	_shake = 0.0
+	if _world != null:
+		_world.position = Vector2.ZERO
 
 	_stage = GameData.get_stage(current_layer)
 	if _stage == null:
@@ -100,6 +108,15 @@ func _process(delta: float) -> void:
 	for actor in _views:
 		_views[actor].sync()
 	_hud.update_live(_engine)
+	_update_shake(delta)
+
+
+func _update_shake(delta: float) -> void:
+	if _shake > 0.0:
+		_shake = maxf(0.0, _shake - delta * 40.0)
+		_world.position = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)) * _shake
+	elif _world.position != Vector2.ZERO:
+		_world.position = Vector2.ZERO
 
 
 func _make_hero() -> CombatActor:
@@ -155,17 +172,26 @@ func _on_actor_died(actor: CombatActor) -> void:
 	if item != null:
 		Player.add_loot(item)
 		_hud.set_inventory_count(Player.equipment.inventory.size())
+		_hud.notify_loot("%s装备" % QUALITY_CN.get(item.quality, "新"))
 
 
 func _on_hit_landed(target_id: int, amount: float, is_crit: bool, element: StringName) -> void:
 	var pos: Vector2
 	if target_id == 0:
 		pos = _engine.hero.position
+		_shake = maxf(_shake, 5.0)   # M5: hero got hit
 	else:
 		var a: CombatActor = _actor_by_id.get(target_id)
 		if a == null:
 			return
 		pos = a.position
+		var v: EnemyView = _views.get(a)
+		if v != null:
+			v.hit_flash()
+		if a.is_boss:
+			_shake = maxf(_shake, 7.0)
+	if is_crit:
+		_shake = maxf(_shake, 11.0)   # M5: crits punch
 	var dt := DamageText.new()
 	dt.setup(int(round(amount)), is_crit, element)
 	dt.position = pos + Vector2(0.0, -50.0)
@@ -222,6 +248,19 @@ func _apply_player_stats_to_hero() -> void:
 	h.hp = st.hp * ratio
 	if _hud != null:
 		_hud.update_live(_engine)
+
+
+func _on_skill_tapped(index: int) -> void:
+	if _engine == null:
+		return
+	var status: Array = _engine.skill_status()
+	if index >= 0 and index < status.size():
+		_engine.manual_cast(status[index]["id"])
+
+
+func _on_auto_toggled(on: bool) -> void:
+	if _engine != null:
+		_engine.auto_cast = on
 
 
 func _go_menu() -> void:

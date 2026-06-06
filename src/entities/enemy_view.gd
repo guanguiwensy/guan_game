@@ -5,12 +5,21 @@ extends Node2D
 
 var actor: CombatActor
 var _dying := false
+var _flash := 0.0
+
+
+func hit_flash() -> void:
+	_flash = 1.0
 
 
 func sync() -> void:
 	if actor == null or _dying:
 		return
 	position = actor.position
+	if _flash > 0.0:
+		_flash = maxf(0.0, _flash - 0.12)
+		var b := 1.0 + _flash   # M5: briefly overbright on hit
+		modulate = Color(b, b, b)
 	queue_redraw()
 
 
