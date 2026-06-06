@@ -33,5 +33,4 @@ func _ready() -> void:
 
 
 func _on_start_pressed() -> void:
-	# M1 will change_scene to battle.tscn here.
-	print("[MainMenu] Descend pressed — BattleScene arrives in M1.")
+	get_tree().change_scene_to_file("res://src/scenes/battle.tscn")

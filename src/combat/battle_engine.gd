@@ -242,3 +242,25 @@ func _nearest_enemy() -> CombatActor:
 			best_d = d
 			best = e
 	return best
+
+
+# --- Read-only accessors for the presentation layer (HUD) ------------------
+
+func enemies_alive_count() -> int:
+	return _enemies_alive()
+
+
+func current_wave_index() -> int:
+	return _wave_index
+
+
+func total_waves() -> int:
+	return _stage.waves.size() if _stage != null else 0
+
+
+## [{id, name, remaining, cooldown}] for each active skill — feeds the skill bar.
+func skill_status() -> Array:
+	var out: Array = []
+	for s in _skills.actives:
+		out.append({"id": s.id, "name": s.display_name, "remaining": _skills.remaining(s.id), "cooldown": s.cooldown})
+	return out

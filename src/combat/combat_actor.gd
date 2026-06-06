@@ -50,3 +50,8 @@ func slow_factor() -> float:
 		if s.kind == &"slow" and s.remaining > 0.0:
 			f = minf(f, 1.0 - s.magnitude)
 	return maxf(f, 0.1)
+
+
+## Player-facing power rating (战力).
+func power() -> float:
+	return Formulas.power(attack, max_hp, armor, crit_rate, crit_damage, attack_speed, elemental_damage)
