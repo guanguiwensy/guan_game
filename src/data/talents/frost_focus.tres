@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_uomsi"]
+
+[resource]
+script = ExtResource("1_uomsi")
+id = &"frost_focus"
+display_name = "冰霜专注 Frost Focus"
+category = "elemental"
+stat = &"elemental_damage"
+value_per_rank = 12.0
+cost_per_rank = 2
+requires = Array[StringName]([&"searing_brand"])
+grid_pos = Vector2i(1, 2)

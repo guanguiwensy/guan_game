@@ -6,6 +6,7 @@ extends CanvasLayer
 signal again(layer: int)
 signal to_menu()
 signal inventory_requested()
+signal talents_requested()
 
 var _title: Label
 var _primary: Button
@@ -46,6 +47,12 @@ func _ready() -> void:
 	bag.custom_minimum_size = Vector2(380, 84)
 	bag.pressed.connect(func() -> void: inventory_requested.emit())
 	vb.add_child(bag)
+
+	var tal := Button.new()
+	tal.text = "天赋  Talents"
+	tal.custom_minimum_size = Vector2(380, 84)
+	tal.pressed.connect(func() -> void: talents_requested.emit())
+	vb.add_child(tal)
 
 	var menu := Button.new()
 	menu.text = "返回主菜单  Menu"

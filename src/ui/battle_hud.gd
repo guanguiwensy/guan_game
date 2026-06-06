@@ -6,6 +6,7 @@ extends CanvasLayer
 
 signal debug_jump(layer: int)
 signal inventory_pressed()
+signal talents_pressed()
 
 var _inv_button: Button
 var _layer_label: Label
@@ -44,6 +45,10 @@ func _ready() -> void:
 	_inv_button.text = "背包 (0)"
 	_inv_button.pressed.connect(func() -> void: inventory_pressed.emit())
 	top.add_child(_inv_button)
+	var tal_button := Button.new()
+	tal_button.text = "天赋"
+	tal_button.pressed.connect(func() -> void: talents_pressed.emit())
+	top.add_child(tal_button)
 	var dbg := Button.new()
 	dbg.text = "→ L10"
 	dbg.pressed.connect(func() -> void: debug_jump.emit(10))

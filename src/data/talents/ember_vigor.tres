@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_htl5h"]
+
+[resource]
+script = ExtResource("1_htl5h")
+id = &"ember_vigor"
+display_name = "余烬活力 Ember Vigor"
+category = "hp"
+stat = &"hp"
+value_per_rank = 60.0
+max_rank = 3
+grid_pos = Vector2i(2, 0)

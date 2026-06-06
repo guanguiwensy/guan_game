@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_s1y4l"]
+
+[resource]
+script = ExtResource("1_s1y4l")
+id = &"searing_brand"
+display_name = "灼印 Searing Brand"
+category = "elemental"
+stat = &"elemental_damage"
+value_per_rank = 8.0
+max_rank = 2
+requires = Array[StringName]([&"ember_might"])
+grid_pos = Vector2i(0, 2)

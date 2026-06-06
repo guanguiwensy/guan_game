@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_nj37i"]
+
+[resource]
+script = ExtResource("1_nj37i")
+id = &"cinderlord"
+display_name = "余烬领主 Cinderlord"
+stat = &"attack"
+value_per_rank = 25.0
+cost_per_rank = 3
+requires = Array[StringName]([&"searing_brand", &"executioner"])
+grid_pos = Vector2i(0, 5)

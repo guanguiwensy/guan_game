@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_tb4rm"]
+
+[resource]
+script = ExtResource("1_tb4rm")
+id = &"cruel_strikes"
+display_name = "残酷打击 Cruel Strikes"
+category = "crit"
+stat = &"crit_damage"
+value_per_rank = 0.1
+max_rank = 2
+requires = Array[StringName]([&"keen_edge"])
+grid_pos = Vector2i(0, 3)

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_mdulq"]
+
+[resource]
+script = ExtResource("1_mdulq")
+id = &"executioner"
+display_name = "处决 Executioner"
+category = "crit"
+stat = &"crit_damage"
+value_per_rank = 0.15
+cost_per_rank = 2
+requires = Array[StringName]([&"cruel_strikes"])
+grid_pos = Vector2i(0, 4)

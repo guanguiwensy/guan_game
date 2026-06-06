@@ -10,11 +10,13 @@ func _initialize() -> void:
 	_ensure_dir("res://src/data/enemies")
 	_ensure_dir("res://src/data/stages")
 	_ensure_dir("res://src/data/affixes")
+	_ensure_dir("res://src/data/talents")
 	var n := 0
 	n += _gen_skills()
 	n += _gen_enemies()
 	n += _gen_stages()
 	n += _gen_affixes()
+	n += _gen_talents()
 	print("[generate_data] wrote %d resources" % n)
 	quit(0)
 
@@ -146,3 +148,43 @@ func _affix(id: StringName, stat: StringName, lo: float, hi: float, pct: bool = 
 	a.is_percent = pct
 	a.allowed_slots = []
 	return a
+
+
+# --- Talents (Path of Cinders) ---------------------------------------------
+
+func _gen_talents() -> int:
+	# id, name, category, stat, value, is_percent, max_rank, cost, requires, gx, gy
+	var defs := [
+		[&"ember_might", "余烬之力 Ember Might", "attack", &"attack", 8.0, false, 3, 1, [], 0, 0],
+		[&"ember_vigor", "余烬活力 Ember Vigor", "hp", &"hp", 60.0, false, 3, 1, [], 2, 0],
+		[&"keen_edge", "锋锐 Keen Edge", "crit", &"crit_rate", 0.03, false, 2, 1, [&"ember_might"], 0, 1],
+		[&"swift_hands", "迅捷 Swift Hands", "attack", &"attack_speed", 0.06, false, 2, 1, [&"ember_might"], 1, 1],
+		[&"thick_hide", "厚皮 Thick Hide", "hp", &"armor", 6.0, false, 2, 1, [&"ember_vigor"], 2, 1],
+		[&"searing_brand", "灼印 Searing Brand", "elemental", &"elemental_damage", 8.0, false, 2, 1, [&"ember_might"], 0, 2],
+		[&"frost_focus", "冰霜专注 Frost Focus", "elemental", &"elemental_damage", 12.0, false, 1, 2, [&"searing_brand"], 1, 2],
+		[&"cruel_strikes", "残酷打击 Cruel Strikes", "crit", &"crit_damage", 0.10, false, 2, 1, [&"keen_edge"], 0, 3],
+		[&"precision", "精准 Precision", "crit", &"crit_rate", 0.04, false, 1, 2, [&"keen_edge"], 1, 3],
+		[&"bonfire_heart", "篝火之心 Bonfire Heart", "hp", &"hp", 0.10, true, 1, 2, [&"thick_hide"], 2, 2],
+		[&"battle_fury", "战怒 Battle Fury", "attack", &"attack_speed", 0.05, false, 1, 2, [&"swift_hands"], 1, 4],
+		[&"executioner", "处决 Executioner", "crit", &"crit_damage", 0.15, false, 1, 2, [&"cruel_strikes"], 0, 4],
+		[&"unbroken", "不屈 Unbroken", "hp", &"hp", 200.0, false, 1, 3, [&"bonfire_heart"], 2, 3],
+		[&"cinderlord", "余烬领主 Cinderlord", "attack", &"attack", 25.0, false, 1, 3, [&"searing_brand", &"executioner"], 0, 5],
+	]
+	var c := 0
+	for d in defs:
+		var n := TalentNode.new()
+		n.id = d[0]
+		n.display_name = d[1]
+		n.category = d[2]
+		n.stat = d[3]
+		n.value_per_rank = d[4]
+		n.is_percent = d[5]
+		n.max_rank = d[6]
+		n.cost_per_rank = d[7]
+		var reqs: Array[StringName] = []
+		for r in d[8]:
+			reqs.append(r)
+		n.requires = reqs
+		n.grid_pos = Vector2i(d[9], d[10])
+		c += _save(n, "res://src/data/talents/%s.tres" % String(d[0]))
+	return c

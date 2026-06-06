@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_8ncvr"]
+
+[resource]
+script = ExtResource("1_8ncvr")
+id = &"thick_hide"
+display_name = "厚皮 Thick Hide"
+category = "hp"
+stat = &"armor"
+value_per_rank = 6.0
+max_rank = 2
+requires = Array[StringName]([&"ember_vigor"])
+grid_pos = Vector2i(2, 1)

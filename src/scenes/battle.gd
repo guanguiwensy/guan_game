@@ -9,6 +9,7 @@ var _world: Node2D
 var _hud: BattleHud
 var _result: ResultPanel
 var _inv: InventoryPanel
+var _talents: TalentTreePanel
 var _hero_view: HeroView
 var _views: Dictionary = {}        # CombatActor -> EnemyView
 var _actor_by_id: Dictionary = {}  # int -> CombatActor (enemies; hero is id 0)
@@ -30,16 +31,22 @@ func _ready() -> void:
 	add_child(_hud)
 	_hud.debug_jump.connect(start_layer)
 	_hud.inventory_pressed.connect(_open_inventory)
+	_hud.talents_pressed.connect(_open_talents)
 
 	_result = ResultPanel.new()
 	add_child(_result)
 	_result.again.connect(start_layer)
 	_result.to_menu.connect(_go_menu)
 	_result.inventory_requested.connect(_open_inventory)
+	_result.talents_requested.connect(_open_talents)
 
 	_inv = InventoryPanel.new()
 	add_child(_inv)
-	_inv.closed.connect(_on_inventory_closed)
+	_inv.closed.connect(_on_panel_closed)
+
+	_talents = TalentTreePanel.new()
+	add_child(_talents)
+	_talents.closed.connect(_on_panel_closed)
 
 	start_layer(current_layer)
 
@@ -183,7 +190,12 @@ func _open_inventory() -> void:
 	_inv.open(Player.equipment, Player.base_stats)
 
 
-func _on_inventory_closed() -> void:
+func _open_talents() -> void:
+	_paused = true
+	_talents.open(Player.talents)
+
+
+func _on_panel_closed() -> void:
 	_paused = false
 	_apply_player_stats_to_hero()
 	_hud.set_inventory_count(Player.equipment.inventory.size())

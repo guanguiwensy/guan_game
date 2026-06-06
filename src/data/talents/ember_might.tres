@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_t4lps"]
+
+[resource]
+script = ExtResource("1_t4lps")
+id = &"ember_might"
+display_name = "余烬之力 Ember Might"
+stat = &"attack"
+value_per_rank = 8.0
+max_rank = 3

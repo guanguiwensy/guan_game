@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_kaisk"]
+
+[resource]
+script = ExtResource("1_kaisk")
+id = &"unbroken"
+display_name = "不屈 Unbroken"
+category = "hp"
+stat = &"hp"
+value_per_rank = 200.0
+cost_per_rank = 3
+requires = Array[StringName]([&"bonfire_heart"])
+grid_pos = Vector2i(2, 3)

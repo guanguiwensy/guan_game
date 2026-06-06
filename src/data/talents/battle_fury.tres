@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_7hib8"]
+
+[resource]
+script = ExtResource("1_7hib8")
+id = &"battle_fury"
+display_name = "战怒 Battle Fury"
+stat = &"attack_speed"
+value_per_rank = 0.05
+cost_per_rank = 2
+requires = Array[StringName]([&"swift_hands"])
+grid_pos = Vector2i(1, 4)

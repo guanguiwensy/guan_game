@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_rjgvs"]
+
+[resource]
+script = ExtResource("1_rjgvs")
+id = &"precision"
+display_name = "精准 Precision"
+category = "crit"
+stat = &"crit_rate"
+value_per_rank = 0.04
+cost_per_rank = 2
+requires = Array[StringName]([&"keen_edge"])
+grid_pos = Vector2i(1, 3)

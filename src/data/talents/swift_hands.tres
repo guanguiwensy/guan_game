@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_l77af"]
+
+[resource]
+script = ExtResource("1_l77af")
+id = &"swift_hands"
+display_name = "迅捷 Swift Hands"
+stat = &"attack_speed"
+value_per_rank = 0.06
+max_rank = 2
+requires = Array[StringName]([&"ember_might"])
+grid_pos = Vector2i(1, 1)

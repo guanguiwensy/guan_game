@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TalentNode" format=3]
+
+[ext_resource type="Script" path="res://src/types/talent_node.gd" id="1_4fyu2"]
+
+[resource]
+script = ExtResource("1_4fyu2")
+id = &"bonfire_heart"
+display_name = "篝火之心 Bonfire Heart"
+category = "hp"
+stat = &"hp"
+value_per_rank = 0.1
+is_percent = true
+cost_per_rank = 2
+requires = Array[StringName]([&"thick_hide"])
+grid_pos = Vector2i(2, 2)

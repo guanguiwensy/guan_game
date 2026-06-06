@@ -1,10 +1,14 @@
 extends Node
-## Persistent player profile (autoload `Player`). Holds base hero stats, the EquipmentSystem
-## (equipped + inventory), and run progress. M2: lives in memory; M4 serializes it to save.
-## Final combat stats = base + equipment (+ talents in M3) via current_stats().
+## Persistent player profile (autoload `Player`). Base hero stats + equipment + talents +
+## run progress. Final combat stats = base + equipment + talents via current_stats().
+## M2: equipment. M3: talents + leveling. M4 will serialize this to the save file.
+
+const TALENT_POINTS_PER_LEVEL := 1
+const STARTING_TALENT_POINTS := 5
 
 var base_stats: HeroStats
 var equipment: EquipmentSystem
+var talents: TalentSystem
 var gold: int = 0
 var xp: int = 0
 var level: int = 1
@@ -18,6 +22,8 @@ func _ready() -> void:
 func reset() -> void:
 	base_stats = _make_base()
 	equipment = EquipmentSystem.new()
+	talents = TalentSystem.new()
+	talents.setup(GameData.talents.values(), STARTING_TALENT_POINTS)
 	gold = 0
 	xp = 0
 	level = 1
@@ -25,7 +31,9 @@ func reset() -> void:
 
 
 func current_stats() -> HeroStats:
-	return equipment.recompute(base_stats)
+	var s := equipment.recompute(base_stats)
+	talents.apply(s)
+	return s
 
 
 func add_loot(item: Item) -> void:
@@ -36,9 +44,14 @@ func equip(item: Item) -> void:
 	equipment.equip(item)
 
 
+## Grants xp/gold and processes any level-ups (each grants talent points).
 func add_rewards(xp_amount: int, gold_amount: int) -> void:
-	xp += xp_amount
 	gold += gold_amount
+	xp += xp_amount
+	while xp >= Formulas.xp_to_next(level):
+		xp -= Formulas.xp_to_next(level)
+		level += 1
+		talents.grant_points(TALENT_POINTS_PER_LEVEL)
 
 
 func _make_base() -> HeroStats:
