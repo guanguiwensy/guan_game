@@ -151,7 +151,12 @@ func _cast_skill(skill: SkillData, primary: CombatActor) -> void:
 
 func _apply_skill_damage(skill: SkillData, attacker: CombatActor, defender: CombatActor) -> void:
 	var res := _combat.resolve_hit(attacker, defender, skill.skill_multiplier)
-	hit_landed.emit(defender.id, float(res["damage"]), bool(res["is_crit"]), StringName(skill.tag))
+	var dmg := float(res["damage"])
+	# Elemental skills add the attacker's elemental_damage as flat bonus (GDD §1).
+	if skill.tag != "physical" and attacker.elemental_damage > 0.0:
+		defender.hp -= attacker.elemental_damage
+		dmg += attacker.elemental_damage
+	hit_landed.emit(defender.id, dmg, bool(res["is_crit"]), StringName(skill.tag))
 	if skill.status != &"" and _rng.randf() < skill.status_chance:
 		_apply_skill_status(skill, defender)
 

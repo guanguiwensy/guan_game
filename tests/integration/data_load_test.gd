@@ -11,6 +11,7 @@ func test_generated_config_loads() -> void:
 	assert_eq(gd.skills.size(), 4, "expected 4 skills")
 	assert_eq(gd.enemies.size(), 4, "expected 4 enemies")
 	assert_eq(gd.stages.size(), 10, "expected 10 stages")
+	assert_eq(gd.affixes.size(), 7, "expected 7 affixes")
 
 	var cleave: SkillData = gd.get_skill(&"cleaving_blow")
 	assert_true(cleave != null, "cleaving_blow should load")

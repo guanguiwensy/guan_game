@@ -9,10 +9,12 @@ func _initialize() -> void:
 	_ensure_dir("res://src/data/skills")
 	_ensure_dir("res://src/data/enemies")
 	_ensure_dir("res://src/data/stages")
+	_ensure_dir("res://src/data/affixes")
 	var n := 0
 	n += _gen_skills()
 	n += _gen_enemies()
 	n += _gen_stages()
+	n += _gen_affixes()
 	print("[generate_data] wrote %d resources" % n)
 	quit(0)
 
@@ -119,3 +121,28 @@ func _stage(L: int) -> StageData:
 		waves.append({&"lord_of_cinders": 1})
 	s.waves = waves
 	return s
+
+
+# --- Affixes ---------------------------------------------------------------
+
+func _gen_affixes() -> int:
+	var c := 0
+	c += _save(_affix(&"aff_hp", &"hp", 20.0, 60.0), "res://src/data/affixes/aff_hp.tres")
+	c += _save(_affix(&"aff_attack", &"attack", 4.0, 12.0), "res://src/data/affixes/aff_attack.tres")
+	c += _save(_affix(&"aff_armor", &"armor", 3.0, 10.0), "res://src/data/affixes/aff_armor.tres")
+	c += _save(_affix(&"aff_crit_rate", &"crit_rate", 0.02, 0.06), "res://src/data/affixes/aff_crit_rate.tres")
+	c += _save(_affix(&"aff_crit_damage", &"crit_damage", 0.06, 0.18), "res://src/data/affixes/aff_crit_damage.tres")
+	c += _save(_affix(&"aff_attack_speed", &"attack_speed", 0.03, 0.10), "res://src/data/affixes/aff_attack_speed.tres")
+	c += _save(_affix(&"aff_elemental", &"elemental_damage", 5.0, 15.0), "res://src/data/affixes/aff_elemental.tres")
+	return c
+
+
+func _affix(id: StringName, stat: StringName, lo: float, hi: float, pct: bool = false) -> AffixData:
+	var a := AffixData.new()
+	a.id = id
+	a.stat = stat
+	a.min_value = lo
+	a.max_value = hi
+	a.is_percent = pct
+	a.allowed_slots = []
+	return a

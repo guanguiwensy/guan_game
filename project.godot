@@ -18,6 +18,7 @@ EventBus="*res://src/autoload/event_bus.gd"
 GameData="*res://src/autoload/game_data.gd"
 SaveSystem="*res://src/autoload/save_system.gd"
 Rng="*res://src/autoload/rng.gd"
+Player="*res://src/autoload/player_state.gd"
 
 [display]
 

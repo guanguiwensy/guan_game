@@ -5,7 +5,9 @@ extends CanvasLayer
 ## it reads BattleEngine state each frame, it does not drive logic.
 
 signal debug_jump(layer: int)
+signal inventory_pressed()
 
+var _inv_button: Button
 var _layer_label: Label
 var _wave_label: Label
 var _enemies_label: Label
@@ -38,6 +40,10 @@ func _ready() -> void:
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(spacer)
+	_inv_button = Button.new()
+	_inv_button.text = "背包 (0)"
+	_inv_button.pressed.connect(func() -> void: inventory_pressed.emit())
+	top.add_child(_inv_button)
 	var dbg := Button.new()
 	dbg.text = "→ L10"
 	dbg.pressed.connect(func() -> void: debug_jump.emit(10))
@@ -90,6 +96,11 @@ func _ready() -> void:
 
 func set_layer_number(layer_num: int) -> void:
 	_layer_label.text = "第 %d 层" % layer_num
+
+
+func set_inventory_count(n: int) -> void:
+	if _inv_button != null:
+		_inv_button.text = "背包 (%d)" % n
 
 
 func update_live(engine: Variant) -> void:

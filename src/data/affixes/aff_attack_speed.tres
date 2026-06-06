@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AffixData" format=3]
+
+[ext_resource type="Script" path="res://src/types/affix_data.gd" id="1_0oon3"]
+
+[resource]
+script = ExtResource("1_0oon3")
+id = &"aff_attack_speed"
+stat = &"attack_speed"
+min_value = 0.03
+max_value = 0.1

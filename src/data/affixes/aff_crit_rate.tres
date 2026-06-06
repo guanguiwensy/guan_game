@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AffixData" format=3]
+
+[ext_resource type="Script" path="res://src/types/affix_data.gd" id="1_eycpw"]
+
+[resource]
+script = ExtResource("1_eycpw")
+id = &"aff_crit_rate"
+stat = &"crit_rate"
+min_value = 0.02
+max_value = 0.06
