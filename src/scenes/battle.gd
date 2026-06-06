@@ -26,6 +26,7 @@ const QUALITY_CN := {&"common": "锈蚀", &"magic": "灼印", &"rare": "淬火",
 
 
 func _ready() -> void:
+	_make_background()
 	_world = Node2D.new()
 	_world.name = "World"
 	add_child(_world)
@@ -82,6 +83,7 @@ func start_layer(layer: int) -> void:
 	_engine.hit_landed.connect(_on_hit_landed)
 	_engine.battle_won.connect(_on_battle_won)
 	_engine.battle_lost.connect(_on_battle_lost)
+	_engine.aoe_cast.connect(_on_aoe_cast)
 
 	var hero := _make_hero()
 	hero.id = 0
@@ -168,6 +170,11 @@ func _on_actor_died(actor: CombatActor) -> void:
 		if is_instance_valid(v):
 			v.play_death()
 	# loot roll (seeded). Boss always drops; normal kills at LootSystem.NORMAL_DROP_CHANCE.
+	# rewards accrue per kill (visible mid-fight level-ups); failure keeps what was earned
+	var lv0 := Player.level
+	Player.add_rewards(actor.xp_reward, actor.gold_reward)
+	if Player.level > lv0:
+		_hud.toast("升级! Lv %d" % Player.level, Color(0.45, 1.0, 0.55))
 	var item := _loot.maybe_drop(actor.is_boss, _stage.drop_level, _stage.drop_quality_weights, _affix_pool)
 	if item != null:
 		Player.add_loot(item)
@@ -199,16 +206,43 @@ func _on_hit_landed(target_id: int, amount: float, is_crit: bool, element: Strin
 
 
 func _on_battle_won(layer: int) -> void:
-	Player.add_rewards(_engine.total_xp, _engine.total_gold)
+	# rewards already accrued per kill in _on_actor_died
 	Player.max_layer_cleared = maxi(Player.max_layer_cleared, layer)
 	Player.save()
 	_result.show_result(true, layer)
 
 
 func _on_battle_lost(layer: int) -> void:
-	Player.add_rewards(_engine.total_xp, _engine.total_gold)
 	Player.save()
 	_result.show_result(false, layer)
+
+
+func _on_aoe_cast(center: Vector2, radius: float, element: StringName) -> void:
+	var ring := SkillRing.new()
+	var col := Color(0.6, 0.85, 1.0) if element == &"ice" else Color(1.0, 0.6, 0.25)
+	ring.setup(radius, col)
+	ring.position = center
+	_world.add_child(ring)
+
+
+func _make_background() -> void:
+	var bg := CanvasLayer.new()
+	bg.layer = -10
+	var tr := TextureRect.new()
+	tr.set_anchors_preset(Control.PRESET_FULL_RECT)
+	tr.stretch_mode = TextureRect.STRETCH_SCALE
+	var grad := Gradient.new()
+	grad.set_color(0, Color(0.12, 0.03, 0.04))
+	grad.set_color(1, Color(0.02, 0.01, 0.02))
+	var gt := GradientTexture2D.new()
+	gt.gradient = grad
+	gt.width = 64
+	gt.height = 256
+	gt.fill_from = Vector2(0, 0)
+	gt.fill_to = Vector2(0, 1)
+	tr.texture = gt
+	bg.add_child(tr)
+	add_child(bg)
 
 
 # --- Inventory ----------------------------------------------------------------

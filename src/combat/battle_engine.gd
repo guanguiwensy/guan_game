@@ -12,6 +12,7 @@ signal wave_started(wave_index: int)
 signal reward_gained(xp: int, gold: int)
 signal battle_won(layer: int)
 signal battle_lost(layer: int)
+signal aoe_cast(center: Vector2, radius: float, element: StringName)
 
 const STATE_RUNNING := 0
 const STATE_WON := 1
@@ -142,10 +143,12 @@ func _cast_skill(skill: SkillData, primary: CombatActor) -> void:
 		"single":
 			_apply_skill_damage(skill, hero, primary)
 		"aoe_around_hero":
+			aoe_cast.emit(hero.position, skill.aoe_radius, StringName(skill.tag))
 			for e in enemies:
 				if e.is_alive() and hero.position.distance_to(e.position) <= skill.aoe_radius:
 					_apply_skill_damage(skill, hero, e)
 		"aoe_at_target":
+			aoe_cast.emit(primary.position, skill.aoe_radius, StringName(skill.tag))
 			for e in enemies:
 				if e.is_alive() and primary.position.distance_to(e.position) <= skill.aoe_radius:
 					_apply_skill_damage(skill, hero, e)

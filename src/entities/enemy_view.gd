@@ -26,13 +26,17 @@ func sync() -> void:
 func play_death() -> void:
 	_dying = true
 	var tw := create_tween()
-	tw.tween_property(self, "modulate:a", 0.0, 0.25)
+	tw.tween_property(self, "scale", Vector2(1.5, 1.5), 0.22)   # M5: pop on death
+	tw.parallel().tween_property(self, "modulate:a", 0.0, 0.22)
 	tw.tween_callback(queue_free)
 
 
 func _draw() -> void:
 	if actor == null:
 		return
+	if not _dying:
+		var bob := sin(Time.get_ticks_msec() / 250.0 + float(actor.id)) * 3.0   # M5: idle bob
+		draw_set_transform(Vector2(0, bob), 0.0, Vector2.ONE)
 	var s := 64.0 if actor.is_boss else 34.0
 	var col := Color(0.72, 0.18, 0.18) if actor.is_boss else Color(0.92, 0.55, 0.30)
 	draw_rect(Rect2(-s * 0.5, -s * 0.5, s, s), col)

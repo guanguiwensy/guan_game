@@ -111,17 +111,22 @@ func set_inventory_count(n: int) -> void:
 
 ## Transient "loot dropped" toast (M5).
 func notify_loot(text: String) -> void:
+	toast("掉落：" + text, Color(1.0, 0.85, 0.3))
+
+
+## Generic transient toast near the top of the screen.
+func toast(text: String, color: Color = Color.WHITE) -> void:
 	if _root == null:
 		return
 	var t := Label.new()
-	t.text = "掉落：" + text
-	t.add_theme_font_size_override("font_size", 28)
-	t.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3))
+	t.text = text
+	t.add_theme_font_size_override("font_size", 30)
+	t.add_theme_color_override("font_color", color)
 	t.position = Vector2(320, 170)
 	_root.add_child(t)
 	var tw := t.create_tween()
 	tw.tween_property(t, "position:y", 120.0, 0.7)
-	tw.parallel().tween_property(t, "modulate:a", 0.0, 1.1)
+	tw.parallel().tween_property(t, "modulate:a", 0.0, 1.2)
 	tw.tween_callback(t.queue_free)
 
 
