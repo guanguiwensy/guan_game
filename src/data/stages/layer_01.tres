@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="StageData" format=3]
+
+[ext_resource type="Script" path="res://src/types/stage_data.gd" id="1_fgen0"]
+
+[resource]
+script = ExtResource("1_fgen0")
+waves = Array[Dictionary]([{
+&"cinder_wisp": 4
+}, {
+&"bonegnaw_crawler": 1
+}])
+gold_reward = 20
+xp_reward = 30
+drop_quality_weights = {
+&"common": 60.0,
+&"epic": 2.5,
+&"legendary": 0.5,
+&"magic": 28.0,
+&"rare": 9.0
+}

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="StageData" format=3]
+
+[ext_resource type="Script" path="res://src/types/stage_data.gd" id="1_hckcj"]
+
+[resource]
+script = ExtResource("1_hckcj")
+layer = 5
+waves = Array[Dictionary]([{
+&"cinder_wisp": 8
+}, {
+&"bonegnaw_crawler": 3
+}, {
+&"slagbound_husk": 2
+}])
+gold_reward = 100
+xp_reward = 150
+drop_level = 5
+drop_quality_weights = {
+&"common": 42.22222222222222,
+&"epic": 8.5,
+&"legendary": 2.0555555555555554,
+&"magic": 28.88888888888889,
+&"rare": 18.333333333333332
+}

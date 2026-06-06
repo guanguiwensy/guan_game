@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://src/types/skill_data.gd" id="1_yi6gg"]
+
+[resource]
+script = ExtResource("1_yi6gg")
+id = &"ember_swing"
+display_name = "余烬挥斩 Ember Swing"
+is_auto_attack = true

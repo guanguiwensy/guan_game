@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  godot-tests:
+    name: GDScript headless tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Installs Godot 4.6 (GDScript/headless). Adjust the version string if needed
+      # on first run — setup-godot maps semver to the matching Godot release.
+      - name: Setup Godot 4.6
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.6.0
+          use-dotnet: false
+          include-templates: false
+
+      - name: Import project (build class cache / import resources)
+        run: godot --headless --import
+        continue-on-error: true
+
+      - name: Run unit tests
+        run: godot --headless --script tests/run_tests.gd

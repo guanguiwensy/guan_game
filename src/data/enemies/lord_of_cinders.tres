@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://src/types/enemy_data.gd" id="1_m3yop"]
+
+[resource]
+script = ExtResource("1_m3yop")
+id = &"lord_of_cinders"
+display_name = "焚誓领主 Lord of Cinders"
+base_hp = 1400.0
+base_attack = 30.0
+base_armor = 30.0
+move_speed = 45.0
+attack_interval = 1.5
+xp_reward = 100
+gold_reward = 80
+is_boss = true

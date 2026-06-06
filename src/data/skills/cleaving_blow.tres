@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://src/types/skill_data.gd" id="1_xrb77"]
+
+[resource]
+script = ExtResource("1_xrb77")
+id = &"cleaving_blow"
+display_name = "裂石斩 Cleaving Blow"
+skill_multiplier = 2.4
+cooldown = 4.0
+auto_cast_priority = 1

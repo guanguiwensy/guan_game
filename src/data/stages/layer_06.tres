@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="StageData" format=3]
+
+[ext_resource type="Script" path="res://src/types/stage_data.gd" id="1_48ygy"]
+
+[resource]
+script = ExtResource("1_48ygy")
+layer = 6
+waves = Array[Dictionary]([{
+&"cinder_wisp": 9
+}, {
+&"bonegnaw_crawler": 4
+}, {
+&"slagbound_husk": 3
+}])
+gold_reward = 120
+xp_reward = 180
+drop_level = 6
+drop_quality_weights = {
+&"common": 37.77777777777778,
+&"epic": 10.0,
+&"legendary": 2.4444444444444446,
+&"magic": 29.11111111111111,
+&"rare": 20.666666666666668
+}

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="StageData" format=3]
+
+[ext_resource type="Script" path="res://src/types/stage_data.gd" id="1_dgdob"]
+
+[resource]
+script = ExtResource("1_dgdob")
+layer = 10
+waves = Array[Dictionary]([{
+&"cinder_wisp": 6
+}, {
+&"bonegnaw_crawler": 3,
+&"slagbound_husk": 2
+}, {
+&"lord_of_cinders": 1
+}])
+gold_reward = 200
+xp_reward = 300
+drop_level = 10
+drop_quality_weights = {
+&"common": 20.0,
+&"epic": 16.0,
+&"legendary": 4.0,
+&"magic": 30.0,
+&"rare": 30.0
+}
+is_boss_layer = true

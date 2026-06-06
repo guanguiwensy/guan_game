@@ -1,0 +1,28 @@
+extends Node
+## Typed signal hub (ADR-002). Gameplay systems EMIT here; UI and other systems
+## SUBSCRIBE. Keeps logic free of UI node lookups. This is the cross-system contract.
+
+@warning_ignore("unused_signal")
+signal damage_dealt(target_id: int, amount: float, is_crit: bool, element: StringName)
+@warning_ignore("unused_signal")
+signal enemy_died(enemy_id: int)
+@warning_ignore("unused_signal")
+signal wave_spawned(layer: int, wave_index: int)
+@warning_ignore("unused_signal")
+signal wave_cleared(layer: int, wave_index: int)
+@warning_ignore("unused_signal")
+signal layer_won(layer: int)
+@warning_ignore("unused_signal")
+signal layer_lost(layer: int)
+@warning_ignore("unused_signal")
+signal loot_dropped(item: Item)
+@warning_ignore("unused_signal")
+signal item_equipped(slot: StringName)
+@warning_ignore("unused_signal")
+signal stats_recomputed()
+@warning_ignore("unused_signal")
+signal level_up(new_level: int)
+@warning_ignore("unused_signal")
+signal currency_changed(gold: int, xp: int)
+@warning_ignore("unused_signal")
+signal talents_changed()

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://src/types/skill_data.gd" id="1_jgwc6"]
+
+[resource]
+script = ExtResource("1_jgwc6")
+id = &"frostmaw_surge"
+display_name = "霜噬冲击 Frostmaw Surge"
+tag = "ice"
+skill_multiplier = 1.6
+cooldown = 9.0
+target_mode = "aoe_at_target"
+aoe_radius = 140.0
+status = &"freeze"
+status_chance = 0.6
+auto_cast_priority = 3

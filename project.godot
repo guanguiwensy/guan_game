@@ -1,0 +1,34 @@
+; Engine configuration file.
+; Godot 4.6 — 《余烬深渊》 Ashsworn: The Cinder Deep (MVP)
+; Portrait mobile idle/auto-battle ARPG. GL Compatibility renderer for mobile + web reach.
+
+config_version=5
+
+[application]
+
+config/name="Ashsworn: The Cinder Deep"
+config/description="Vertical idle/auto-battle ARPG — original IP MVP."
+run/main_scene="res://src/scenes/main_menu.tscn"
+config/features=PackedStringArray("4.6", "GL Compatibility")
+boot_splash/show_image=false
+
+[autoload]
+
+EventBus="*res://src/autoload/event_bus.gd"
+GameData="*res://src/autoload/game_data.gd"
+SaveSystem="*res://src/autoload/save_system.gd"
+Rng="*res://src/autoload/rng.gd"
+
+[display]
+
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation="portrait"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/canvas_textures/default_texture_filter=0

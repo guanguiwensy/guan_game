@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://src/types/enemy_data.gd" id="1_a50ka"]
+
+[resource]
+script = ExtResource("1_a50ka")
+id = &"cinder_wisp"
+display_name = "余烬游魂 Cinder Wisp"
+base_hp = 60.0
+base_attack = 8.0
+move_speed = 140.0
+xp_reward = 5
+gold_reward = 3
