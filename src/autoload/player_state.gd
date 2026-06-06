@@ -1,7 +1,7 @@
 extends Node
 ## Persistent player profile (autoload `Player`). Base hero stats + equipment + talents +
 ## run progress. Final combat stats = base + equipment + talents via current_stats().
-## M2: equipment. M3: talents + leveling. M4 will serialize this to the save file.
+## M4: loads from user://save.json on boot and saves on demand (survives app/browser refresh).
 
 const TALENT_POINTS_PER_LEVEL := 1
 const STARTING_TALENT_POINTS := 5
@@ -16,7 +16,11 @@ var max_layer_cleared: int = 0
 
 
 func _ready() -> void:
-	reset()
+	var data: Dictionary = SaveSystem.load_game() if SaveSystem.has_save() else {}
+	if data.is_empty():
+		reset()
+	else:
+		load_from_dict(data)
 
 
 func reset() -> void:
@@ -52,6 +56,39 @@ func add_rewards(xp_amount: int, gold_amount: int) -> void:
 		xp -= Formulas.xp_to_next(level)
 		level += 1
 		talents.grant_points(TALENT_POINTS_PER_LEVEL)
+
+
+# --- Save (M4) -------------------------------------------------------------
+
+func save() -> void:
+	SaveSystem.save_game(to_dict())
+
+
+func to_dict() -> Dictionary:
+	return {
+		"gold": gold,
+		"xp": xp,
+		"level": level,
+		"max_layer_cleared": max_layer_cleared,
+		"equipment": equipment.to_dict(),
+		"talents": talents.to_dict(),
+		"rng_seed": Rng.master_seed,
+	}
+
+
+func load_from_dict(d: Dictionary) -> void:
+	base_stats = _make_base()
+	equipment = EquipmentSystem.new()
+	equipment.load_from_dict(d.get("equipment", {}))
+	talents = TalentSystem.new()
+	talents.setup(GameData.talents.values(), 0)
+	talents.load_from_dict(d.get("talents", {}))
+	gold = int(d.get("gold", 0))
+	xp = int(d.get("xp", 0))
+	level = int(d.get("level", 1))
+	max_layer_cleared = int(d.get("max_layer_cleared", 0))
+	if d.has("rng_seed"):
+		Rng.reseed(int(d["rng_seed"]))
 
 
 func _make_base() -> HeroStats:

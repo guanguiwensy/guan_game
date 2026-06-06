@@ -31,6 +31,26 @@ func _ready() -> void:
 	start.pressed.connect(_on_start_pressed)
 	vbox.add_child(start)
 
+	var newgame := Button.new()
+	newgame.text = "新游戏 New Game"
+	newgame.custom_minimum_size = Vector2(440, 90)
+	newgame.pressed.connect(_on_new_game)
+	vbox.add_child(newgame)
+
+	if SaveSystem.has_save():
+		var prog := Label.new()
+		prog.text = "存档：Lv %d · 最深第 %d 层" % [Player.level, Player.max_layer_cleared]
+		prog.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		prog.add_theme_font_size_override("font_size", 24)
+		prog.modulate = Color(1, 1, 1, 0.7)
+		vbox.add_child(prog)
+
 
 func _on_start_pressed() -> void:
+	get_tree().change_scene_to_file("res://src/scenes/battle.tscn")
+
+
+func _on_new_game() -> void:
+	SaveSystem.clear_save()
+	Player.reset()
 	get_tree().change_scene_to_file("res://src/scenes/battle.tscn")

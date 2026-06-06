@@ -105,3 +105,22 @@ func _mult(s: HeroStats, stat: StringName, p: float) -> void:
 		&"crit_damage": s.crit_damage *= (1.0 + p)
 		&"attack_speed": s.attack_speed *= (1.0 + p)
 		&"elemental_damage": s.elemental_damage *= (1.0 + p)
+
+
+# --- Save serialization (M4). load_from_dict assumes setup() already ran. ---
+
+func to_dict() -> Dictionary:
+	var r: Dictionary = {}
+	for id in ranks:
+		if int(ranks[id]) > 0:
+			r[String(id)] = int(ranks[id])
+	return {"ranks": r, "available_points": available_points}
+
+
+func load_from_dict(d: Dictionary) -> void:
+	for id in ranks.keys():
+		ranks[id] = 0
+	var r: Dictionary = d.get("ranks", {})
+	for id in r:
+		ranks[StringName(id)] = int(r[id])
+	available_points = int(d.get("available_points", available_points))

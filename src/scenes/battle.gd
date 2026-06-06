@@ -175,11 +175,13 @@ func _on_hit_landed(target_id: int, amount: float, is_crit: bool, element: Strin
 func _on_battle_won(layer: int) -> void:
 	Player.add_rewards(_engine.total_xp, _engine.total_gold)
 	Player.max_layer_cleared = maxi(Player.max_layer_cleared, layer)
+	Player.save()
 	_result.show_result(true, layer)
 
 
 func _on_battle_lost(layer: int) -> void:
 	Player.add_rewards(_engine.total_xp, _engine.total_gold)
+	Player.save()
 	_result.show_result(false, layer)
 
 
@@ -199,6 +201,7 @@ func _on_panel_closed() -> void:
 	_paused = false
 	_apply_player_stats_to_hero()
 	_hud.set_inventory_count(Player.equipment.inventory.size())
+	Player.save()
 
 
 ## Apply equipment changes to the LIVE hero so the player sees numbers update immediately

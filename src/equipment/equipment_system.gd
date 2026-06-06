@@ -56,3 +56,25 @@ func _apply_stat(s: HeroStats, stat: StringName, value: float) -> void:
 		&"attack_speed": s.attack_speed += value
 		&"elemental_damage": s.elemental_damage += value
 		# &"cooldown" — cooldown reduction wired in M3
+
+
+# --- Save serialization (M4) ----------------------------------------------
+
+func to_dict() -> Dictionary:
+	var eq: Dictionary = {}
+	for slot in equipped:
+		eq[String(slot)] = (equipped[slot] as Item).to_dict()
+	var inv: Array = []
+	for it in inventory:
+		inv.append(it.to_dict())
+	return {"equipped": eq, "inventory": inv}
+
+
+func load_from_dict(d: Dictionary) -> void:
+	equipped.clear()
+	inventory.clear()
+	var eq: Dictionary = d.get("equipped", {})
+	for slot in eq:
+		equipped[StringName(slot)] = Item.from_dict(eq[slot])
+	for raw in d.get("inventory", []):
+		inventory.append(Item.from_dict(raw))
